@@ -154,22 +154,28 @@ end
 #   config.port = 8000
 # end
 
-channel = ScreenXTV::Channel.new
 
-config = ScreenXTV::Config.new
-config.public_url = 'demo'
-config.title = 'screenxtv demo'
+loop do
+  begin
+    channel = ScreenXTV::Channel.new
 
-# channel.event do |k,v|
-#   p [k,v]
-# end
+    config = ScreenXTV::Config.new
+    config.public_url = 'demo'
+    config.title = 'screenxtv demo'
 
-d=DateDemo.new channel
-d.prompt="[\e[1mtompng\e[m:~]% "
+    # channel.event do |k,v|
+    #   p [k,v]
+    # end
 
-users = [username:ENV['USERNAME'], password:ENV['PASSWORD']]
+    d=DateDemo.new channel
+    d.prompt="[\e[1mtompng\e[m:~]% "
 
-channel.start config, users do |channel, config|
-  d.run
+    users = [username:ENV['USERNAME'], password:ENV['PASSWORD']]
+
+    channel.start config, users do |channel, config|
+      d.run
+    end
+  rescue
+  end
+  sleep 30
 end
-
