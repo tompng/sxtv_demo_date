@@ -29,6 +29,10 @@ class Demo
     wait time
   end
 
+  def showln str = '', fmt: nil, time: 0
+    show str, fmt: fmt, time: time
+  end
+
   def print str, time: 0
     stream.data str.gsub("\n","\r\n")
     wait time
