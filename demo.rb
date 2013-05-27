@@ -177,7 +177,8 @@ loop do
     channel.start config, users do |channel, config|
       d.run
     end
-  #rescue
+  rescue
+    STDERR.print 'ERRERRERR'
   end
   sleep 30
 end
