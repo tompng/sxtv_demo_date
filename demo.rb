@@ -67,36 +67,38 @@ EOS
 
   def demo
     print LOGO, time: LONG
-    show "The best way to broadcast your terminal to the world.\n",   time: SHORT
-    show "Show your live coding for a study session or hackathon.\n", time: LONG
-    show "\nInstall:\n", fmt: TerminalColor::EMPHASIS
+    showln "The best way to broadcast your terminal to the world.",   time: SHORT
+    showln "Show your live coding for a study session or hackathon.", time: LONG
+    showln
+    showln "Install:", fmt: TerminalColor::EMPHASIS
     show_prompt time: SHORT
     show "gem install screenxtv", time: SHORT
-    show "\n", time: LONG
-    show "\nBroadcast:\n", fmt: TerminalColor::EMPHASIS
+    showln time: LONG
+    showln
+    showln "Broadcast:", fmt: TerminalColor::EMPHASIS
     show_prompt time: SHORT
     show "screenxtv "
     show "[--private]", fmt: TerminalColor.grayscale(10), time: SHORT
     println
     show_prompt time: SHORT
-    show "clear\n", time: VERY_SHORT
+    showln "clear", time: VERY_SHORT
     clear
     show_prompt
-    show "date\n"
+    showln "date"
     println Time.now.strftime "%c"
     show_prompt time: SHORT
-    show "echo Hello World!\n", time: VERY_SHORT
+    showln "echo Hello World!", time: VERY_SHORT
     println "Hello World!"
     show_prompt time: SHORT
     println
     show_prompt time: SHORT
-    show "clock\n"
+    showln "clock"
     20.times do
       print "\r\e[2K#{Time.now.strftime "%T"}", time: SHORT
     end
     println
     show_prompt time: SHORT
-    show "clear\n", time: VERY_SHORT
+    showln "clear", time: VERY_SHORT
     clear
   end
 
