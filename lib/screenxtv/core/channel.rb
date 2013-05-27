@@ -14,16 +14,18 @@ module ScreenXTV
         user = users.find{|u| u[:username] == config.username}
         config.auth_key = user[:auth_key] if user
       end
+      retry_count = 0
       begin
+        retry_count += 1
         @socket = start_init config
       rescue URLReservedException => e
         config.username = e.username
-        user = users.find{|u| [:username] == e.username}
-        raise e if user.nil?
+        user = users.find{|u| u[:username] == e.username}
+        raise e if user.nil? || retry_count >= 2
         config.auth_key = user[:auth_key]
         retry
       rescue URLInUseException => e
-        raise e unless config.anonymous
+        raise e if !config.anonymous || retry_count >= 2
         config.username = nil
         config.auth_key = nil
         config.private_url = nil
@@ -62,6 +64,10 @@ module ScreenXTV
     def start_init config
       socket = ScreenXTV.connect
       socket.send 'init', config.to_json
+      p "EEEEE{{{"
+      config.username='foobar'
+      p config.to_json
+      p "EEEEE}}}"
       key, value = socket.recv
       if key == 'slug' || key == 'private_url'
         url, resume_key = value.split "#"
@@ -80,7 +86,7 @@ module ScreenXTV
         socket.close
         url = config.private? ? config.private_url : config.public_url
         if /reserved.*:(?<username>.+)/ =~ value
-          raise URLReservedException username, url
+          raise URLReservedException.new url, username
         elsif value.match /in.*use/
           raise URLInUseException url
         else

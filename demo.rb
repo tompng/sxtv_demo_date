@@ -151,17 +151,35 @@ end
 
 
 # ScreenXTV.configure do |config|
+#   config.host = 'localhost'
 #   config.port = 8000
 # end
 
+config = ScreenXTV::Config.new
 
+user = ENV['USERNAME']
+pswd = ENV['PASSWORD']
+user = 'tompng'
+pswd = 'hogehogege'
 loop do
+  auth_key = ScreenXTV.authenticate user, pswd
+  while auth_key.nil?
+    begin
+      auth_key = ScreenXTV.authenticate user, pswd
+    rescue
+    end
+    sleep 30
+  end
+  p 'AAAA'
+  p auth_key
+  users = [username: user, auth_key: auth_key]
+
   begin
     channel = ScreenXTV::Channel.new
-
-    config = ScreenXTV::Config.new
     config.public_url = 'demo'
     config.title = 'screenxtv demo'
+    config.username = user
+    config.auth_key = auth_key
 
     # channel.event do |k,v|
     #   p [k,v]
@@ -170,14 +188,12 @@ loop do
     d=DateDemo.new channel
     d.prompt="[\e[1mtompng\e[m:~]% "
 
-    users = [username:ENV['USERNAME'], password:ENV['PASSWORD']]
-
     print users.to_json
 
     channel.start config, users do |channel, config|
       d.run
     end
-  rescue
+  #rescue
     STDERR.print 'ERRERRERR'
   end
   sleep 30
