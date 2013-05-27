@@ -168,6 +168,7 @@ d=DateDemo.new channel
 d.prompt="[\e[1mtompng\e[m:~]% "
 
 channel.start config do |channel, config|
+  channel.winch 80,24
   d.run
 end
 
