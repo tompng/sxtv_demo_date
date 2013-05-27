@@ -17,7 +17,6 @@ class Demo
     sleep sec
   end
 
-
   def show str, fmt: nil, time: 0
     stream.data "\e[#{fmt}m" if fmt
     str.each_char do |c|
@@ -65,41 +64,84 @@ EOS
   SHORT      = 1
   LONG       = 4
 
-  def demo
+  def logo
     print LOGO, time: LONG
+  end
+
+  def describe_screenxtv
     showln "The best way to broadcast your terminal to the world.",   time: SHORT
     showln "Show your live coding for a study session or hackathon.", time: LONG
     showln
+  end
+
+  def how_to_install
     showln "Install:", fmt: TerminalColor::EMPHASIS
     show_prompt time: SHORT
     show "gem install screenxtv", time: SHORT
     showln time: LONG
     showln
+  end
+
+  def how_to_broadcast
     showln "Broadcast:", fmt: TerminalColor::EMPHASIS
     show_prompt time: SHORT
     show "screenxtv "
     show "[--private]", fmt: TerminalColor.grayscale(10), time: SHORT
     println
-    show_prompt time: SHORT
-    showln "clear", time: VERY_SHORT
-    clear
-    show_prompt
-    showln "date"
-    println Time.now.strftime "%c"
-    show_prompt time: SHORT
-    showln "echo Hello World!", time: VERY_SHORT
-    println "Hello World!"
-    show_prompt time: SHORT
-    println
+  end
+
+  def clock_demo
     show_prompt time: SHORT
     showln "clock"
     20.times do
       print "\r\e[2K#{Time.now.strftime "%T"}", time: SHORT
     end
     println
+  end
+
+  def helloworld_demo
+    show_prompt time: SHORT
+    showln "echo Hello World!", time: VERY_SHORT
+    println "Hello World!"
+  end
+
+  def empty_demo
+    show_prompt time: SHORT
+    println
+  end
+
+  def clear_demo
     show_prompt time: SHORT
     showln "clear", time: VERY_SHORT
     clear
+  end
+
+  def date_demo
+    show_prompt
+    showln "date"
+    println Time.now.strftime "%c"
+  end
+
+  def demo
+    logo
+
+    describe_screenxtv
+
+    how_to_install
+
+    how_to_broadcast
+
+    clear_demo
+
+    date_demo
+
+    helloworld_demo
+
+    empty_demo
+
+    clock_demo
+
+    clear_demo
   end
 
   def run
