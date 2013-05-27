@@ -1,5 +1,12 @@
 require './lib/screenxtv'
 
+module TerminalColor
+  EMPHASIS = 1
+  def self.grayscale(scale)
+    "38;5;#{scale+240}"
+  end
+end
+
 class Demo
   attr_accessor :stream, :prompt
   def initialize stream
