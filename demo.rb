@@ -160,7 +160,7 @@ loop do
     channel = ScreenXTV::Channel.new
 
     config = ScreenXTV::Config.new
-    config.public_url = 'demo'
+    config.public_url = 'demodemo'
     config.title = 'screenxtv demo'
 
     # channel.event do |k,v|
@@ -172,10 +172,12 @@ loop do
 
     users = [username:ENV['USERNAME'], password:ENV['PASSWORD']]
 
+    print users.to_json
+
     channel.start config, users do |channel, config|
       d.run
     end
-  rescue
+  #rescue
   end
   sleep 30
 end
