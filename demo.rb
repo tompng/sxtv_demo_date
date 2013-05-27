@@ -12,25 +12,31 @@ class Demo
   def initialize stream
     self.stream = stream
   end
+
+  def wait(sec)
+    sleep sec
+  end
+
+
   def show str, fmt: nil, time: 0
     stream.data "\e[#{fmt}m" if fmt
     str.each_char do |c|
       c="\r\n" if c=="\n"
       stream.data c
-      sleep 0.1
+      wait 0.1
     end
     stream.data "\e[m" if fmt
-    sleep time
+    wait time
   end
 
   def print str, time: 0
     stream.data str.gsub("\n","\r\n")
-    sleep time
+    wait time
   end
 
   def println str = '', time: 0
     stream.data "#{str}\n"
-    sleep time
+    wait time
   end
 
   def clear
@@ -67,7 +73,7 @@ EOS
     show_prompt time: SHORT
     show "screenxtv "
     show "[--private]", fmt: TerminalColor.grayscale(10), time: SHORT
-    show "\n"
+    println
     show_prompt time: SHORT
     show "clear\n", time: VERY_SHORT
     clear
