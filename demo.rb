@@ -151,7 +151,6 @@ end
 
 
 ScreenXTV.configure do |config|
-  config.host = 'localhost'
   config.port = 8000
 end
 
