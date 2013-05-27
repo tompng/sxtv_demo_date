@@ -36,65 +36,55 @@ end
 
 
 class DateDemo < Demo
-  def run
-    loop do
-logo=<<EOS
+  LOGO = <<EOS
  ###                                 ##### #   #
 #     ## # ##  ###   ###  # ##  #  #   #   #   #
  ##  #   ##   ##### ##### ##  #  ##    #    # #
    # #   #    #     #     #   #  ##    #    # #
 ###   ## #     ###   ###  #   # #  #   #     #
 EOS
-      print logo
-      sleep 4
-      show "The best way to broadcast your terminal to the world.\n"
-      sleep 1
-      show "Show your live coding for a study session or hackathon.\n"
-      sleep 4
-      show "\nInstall:\n", fmt: 1
-      show_prompt
-      sleep 1
-      show "gem install screenxtv"
-      sleep 1
-      show "\n"
-      sleep 4
-      show "\nBroadcast:\n", fmt: 1
-      show_prompt
-      sleep 1
-      show "screenxtv "
-      show "[--private]", fmt: '38;5;250'
-      sleep 1
-      show "\n"
-      show_prompt
-      sleep 1
-      show "clear\n"
-      sleep 0.2
-      clear
-      show_prompt
-      show "date\n"
-      print "#{Time.now.strftime "%c"}\n"
-      show_prompt
-      sleep 1
-      show "echo Hello World!\n"
-      sleep 0.2
-      print "Hello World!\n"
-      show_prompt
-      sleep 1
-      print "\n"
-      show_prompt
-      sleep 1
-      show "clock\n"
-      20.times do
-        print "\r\e[2K#{Time.now.strftime "%T"}"
-        sleep 1
-      end
-      print "\n"
-      show_prompt
-      sleep 1
-      show "clear\n"
-      sleep 0.2
-      clear
+
+  VERY_SHORT = 0.2
+  SHORT      = 1
+  LONG       = 4
+
+  def demo
+    print LOGO, time: LONG
+    show "The best way to broadcast your terminal to the world.\n",   time: SHORT
+    show "Show your live coding for a study session or hackathon.\n", time: LONG
+    show "\nInstall:\n", fmt: TerminalColor::EMPHASIS
+    show_prompt time: SHORT
+    show "gem install screenxtv", time: SHORT
+    show "\n", time: LONG
+    show "\nBroadcast:\n", fmt: TerminalColor::EMPHASIS
+    show_prompt time: SHORT
+    show "screenxtv "
+    show "[--private]", fmt: TerminalColor.grayscale(10), time: SHORT
+    show "\n"
+    show_prompt time: SHORT
+    show "clear\n", time: VERY_SHORT
+    clear
+    show_prompt
+    show "date\n"
+    print "#{Time.now.strftime "%c"}\n"
+    show_prompt time: SHORT
+    show "echo Hello World!\n", time: VERY_SHORT
+    print "Hello World!\n"
+    show_prompt time: SHORT
+    print "\n"
+    show_prompt time: SHORT
+    show "clock\n"
+    20.times do
+      print "\r\e[2K#{Time.now.strftime "%T"}", time: SHORT
     end
+    print "\n"
+    show_prompt time: SHORT
+    show "clear\n", time: VERY_SHORT
+    clear
+  end
+
+  def run
+    loop { demo }
   end
 end
 
@@ -105,17 +95,22 @@ ScreenXTV.configure do |config|
 end
 
 channel = ScreenXTV::Channel.new
+def $stdout.data(*args)
+  $stdout.write *args
+end
+channel = $stdout
 
 config = ScreenXTV::Config.new
 config.public_url = 'hoge'
 
-channel.event do |k,v|
-  p [k,v]
-end
+# channel.event do |k,v|
+#   p [k,v]
+# end
 
 d=DateDemo.new channel
 d.prompt="[\e[1mtompng\e[m:~]% "
-channel.start config do |channel, config|
-  d.run
-end
+d.run
+# channel.start config do |channel, config|
+#   d.run
+# end
 
