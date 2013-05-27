@@ -150,24 +150,26 @@ EOS
 end
 
 
-ScreenXTV.configure do |config|
-  config.port = 8000
-end
+# ScreenXTV.configure do |config|
+#   config.port = 8000
+# end
 
 channel = ScreenXTV::Channel.new
 
 config = ScreenXTV::Config.new
-config.public_url = 'hoge'
+config.public_url = 'demo'
+config.title = 'screenxtv demo'
 
-channel.event do |k,v|
-  p [k,v]
-end
+# channel.event do |k,v|
+#   p [k,v]
+# end
 
 d=DateDemo.new channel
 d.prompt="[\e[1mtompng\e[m:~]% "
 
-channel.start config do |channel, config|
-  channel.winch 80,24
+users = [username:ENV['USERNAME'], password:ENV['PASSWORD']]
+
+channel.start config, users do |channel, config|
   d.run
 end
 
