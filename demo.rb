@@ -5,7 +5,7 @@ class Demo
   def initialize stream
     self.stream = stream
   end
-  def show str, fmt=nil
+  def show str, fmt: nil, time: 0
     stream.data "\e[#{fmt}m" if fmt
     str.each_char do |c|
       c="\r\n" if c=="\n"
@@ -13,15 +13,17 @@ class Demo
       sleep 0.1
     end
     stream.data "\e[m" if fmt
+    sleep time
   end
-  def print str
+  def print str, time: 0
     stream.data str.gsub("\n","\r\n")
+    sleep time
   end
   def clear
     stream.data "\e[1;1H\e[2J"
   end
-  def show_prompt
-    print "#{prompt}"
+  def show_prompt time: 0
+    print "#{prompt}", time: time
   end
 end
 
@@ -42,18 +44,18 @@ EOS
       sleep 1
       show "Show your live coding for a study session or hackathon.\n"
       sleep 4
-      show "\nInstall:\n", 1
+      show "\nInstall:\n", fmt: 1
       show_prompt
       sleep 1
       show "gem install screenxtv"
       sleep 1
       show "\n"
       sleep 4
-      show "\nBroadcast:\n", 1
+      show "\nBroadcast:\n", fmt: 1
       show_prompt
       sleep 1
       show "screenxtv "
-      show "[--private]", '38;5;250'
+      show "[--private]", fmt: '38;5;250'
       sleep 1
       show "\n"
       show_prompt
