@@ -38,7 +38,7 @@ class Demo
   end
 
   def println str = '', time: 0
-    stream.data "#{str}\n"
+    stream.data "#{str}\r\n"
     wait time
   end
 
@@ -193,7 +193,7 @@ loop do
     channel.start config, users do |channel, config|
       d.run
     end
-  #rescue
+  rescue
     STDERR.print 'ERRERRERR'
   end
   sleep 30
