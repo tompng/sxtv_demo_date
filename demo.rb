@@ -156,22 +156,18 @@ ScreenXTV.configure do |config|
 end
 
 channel = ScreenXTV::Channel.new
-def $stdout.data(*args)
-  $stdout.write *args
-end
-channel = $stdout
 
 config = ScreenXTV::Config.new
 config.public_url = 'hoge'
 
-# channel.event do |k,v|
-#   p [k,v]
-# end
+channel.event do |k,v|
+  p [k,v]
+end
 
 d=DateDemo.new channel
 d.prompt="[\e[1mtompng\e[m:~]% "
-d.run
-# channel.start config do |channel, config|
-#   d.run
-# end
+
+channel.start config do |channel, config|
+  d.run
+end
 
