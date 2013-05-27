@@ -22,10 +22,17 @@ class Demo
     stream.data "\e[m" if fmt
     sleep time
   end
+
   def print str, time: 0
     stream.data str.gsub("\n","\r\n")
     sleep time
   end
+
+  def println str = '', time: 0
+    stream.data "#{str}\n"
+    sleep time
+  end
+
   def clear
     stream.data "\e[1;1H\e[2J"
   end
@@ -66,18 +73,18 @@ EOS
     clear
     show_prompt
     show "date\n"
-    print "#{Time.now.strftime "%c"}\n"
+    println Time.now.strftime "%c"
     show_prompt time: SHORT
     show "echo Hello World!\n", time: VERY_SHORT
-    print "Hello World!\n"
+    println "Hello World!"
     show_prompt time: SHORT
-    print "\n"
+    println
     show_prompt time: SHORT
     show "clock\n"
     20.times do
       print "\r\e[2K#{Time.now.strftime "%T"}", time: SHORT
     end
-    print "\n"
+    println
     show_prompt time: SHORT
     show "clear\n", time: VERY_SHORT
     clear
