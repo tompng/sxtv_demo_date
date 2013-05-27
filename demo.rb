@@ -45,7 +45,7 @@ class Demo
   def clear
     stream.data "\e[1;1H\e[2J"
   end
-  def show_prompt time: 0
+  def show_prompt(time: 0)
     print "#{prompt}", time: time
   end
 end
@@ -160,7 +160,7 @@ loop do
     channel = ScreenXTV::Channel.new
 
     config = ScreenXTV::Config.new
-    config.public_url = 'demodemo'
+    config.public_url = 'demo'
     config.title = 'screenxtv demo'
 
     # channel.event do |k,v|
